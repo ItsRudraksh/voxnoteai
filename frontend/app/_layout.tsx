@@ -1,28 +1,19 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { useColorScheme, View, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { AppProvider, useApp } from '../src/contexts/AppContext';
+import { AppProvider } from '../src/contexts/AppContext';
 import { colors } from '../src/theme/colors';
 
-function RootLayoutContent() {
+function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const { isLoading } = useApp();
   const isDark = colorScheme === 'dark';
   const theme = isDark ? colors.dark : colors.light;
 
-  if (isLoading) {
-    return (
-      <View style={[styles.loading, { backgroundColor: theme.background }]}>
-        <ActivityIndicator size="large" color={theme.primary} />
-      </View>
-    );
-  }
-
   return (
-    <>
+    <View style={styles.container}>
       <StatusBar style={isDark ? 'light' : 'dark'} />
       <Stack
         screenOptions={{
@@ -37,16 +28,16 @@ function RootLayoutContent() {
         <Stack.Screen name="timeline" />
         <Stack.Screen name="note/[id]" />
       </Stack>
-    </>
+    </View>
   );
 }
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={styles.container}>
       <SafeAreaProvider>
         <AppProvider>
-          <RootLayoutContent />
+          <RootLayoutNav />
         </AppProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
@@ -54,9 +45,7 @@ export default function RootLayout() {
 }
 
 const styles = StyleSheet.create({
-  loading: {
+  container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
