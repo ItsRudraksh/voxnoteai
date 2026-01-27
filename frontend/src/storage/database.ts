@@ -1,35 +1,26 @@
-import * as SQLite from 'expo-sqlite';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Note } from '../types/note';
 
-let db: SQLite.SQLiteDatabase | null = null;
+// Storage keys for AsyncStorage
+const NOTES_KEY = '@voxnote_notes';
+const SETTINGS_PREFIX = '@voxnote_setting_';
+
+// For native platforms, we'll use SQLite, but for now use AsyncStorage everywhere
+// This ensures web compatibility
+
+let initialized = false;
 
 export async function initDatabase(): Promise<void> {
-  if (db) return;
+  if (initialized) return;
+  initialized = true;
   
-  db = await SQLite.openDatabaseAsync('voxnote.db');
-  
-  await db.execAsync(`
-    CREATE TABLE IF NOT EXISTS notes (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      transcript TEXT NOT NULL,
-      summary TEXT,
-      topics TEXT,
-      segments TEXT,
-      sentiment TEXT,
-      intent TEXT,
-      duration REAL DEFAULT 0,
-      audioPath TEXT,
-      confidence REAL DEFAULT 0,
-      createdAt TEXT NOT NULL,
-      updatedAt TEXT NOT NULL
-    );
-    
-    CREATE TABLE IF NOT EXISTS app_settings (
-      key TEXT PRIMARY KEY,
-      value TEXT
-    );
-  `);
+  // Initialize storage - AsyncStorage doesn't need explicit initialization
+  // Just ensure the keys exist
+  const notes = await AsyncStorage.getItem(NOTES_KEY);
+  if (notes === null) {
+    await AsyncStorage.setItem(NOTES_KEY, JSON.stringify([]));
+  }
 }
 
 export async function saveNote(note: Note): Promise<void> {
