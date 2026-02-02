@@ -1,6 +1,10 @@
 import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
-import { v4 as uuidv4 } from 'uuid';
+import * as FileSystem from 'expo-file-system/legacy';
+
+/** Unique ID for local filenames (RN doesn't have crypto.getRandomValues). */
+function uniqueId(): string {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 11)}`;
+}
 
 export interface RecordingResult {
   success: boolean;
@@ -49,6 +53,7 @@ export async function startRecording(): Promise<{ success: boolean; error?: stri
     });
 
     // Create and start recording
+    // createAsync(options, onRecordingStatusUpdate?, progressUpdateIntervalMillis?)
     const { recording: newRecording } = await Audio.Recording.createAsync(
       {
         android: {
@@ -75,7 +80,8 @@ export async function startRecording(): Promise<{ success: boolean; error?: stri
           bitsPerSecond: 128000,
         },
       },
-      { progressUpdateIntervalMillis: 100 }
+      null, // onRecordingStatusUpdate (optional callback)
+      100   // progressUpdateIntervalMillis
     );
 
     recording = newRecording;
@@ -116,7 +122,7 @@ export async function stopRecording(): Promise<RecordingResult> {
       await FileSystem.makeDirectoryAsync(audioDir, { intermediates: true });
     }
 
-    const fileName = `${uuidv4()}.wav`;
+    const fileName = `${uniqueId()}.wav`;
     const newUri = `${audioDir}${fileName}`;
     await FileSystem.moveAsync({ from: uri, to: newUri });
 
