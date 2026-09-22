@@ -1,0 +1,38 @@
+{
+  "cli": {
+    "version": ">= 16.32.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_DEEPGRAM_API_KEY": "b6d77e1d4a865ad97f3969e49aba13ea737c80ca"
+      }
+    },
+    "release": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_DEEPGRAM_API_KEY": "b6d77e1d4a865ad97f3969e49aba13ea737c80ca"
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_DEEPGRAM_API_KEY": "b6d77e1d4a865ad97f3969e49aba13ea737c80ca"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_DEEPGRAM_API_KEY": "b6d77e1d4a865ad97f3969e49aba13ea737c80ca"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

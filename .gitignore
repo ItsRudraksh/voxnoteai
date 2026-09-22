@@ -87,3 +87,7 @@ android-sdk/ -e
 
 expo-env.d.ts
 # @end expo-cli
+
+deepgram-docs/*
+deepgram-docs
+.expo/

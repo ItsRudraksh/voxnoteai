@@ -23,7 +23,8 @@
       "edgeToEdgeEnabled": true,
       "package": "com.voxnote.ai",
       "permissions": [
-        "android.permission.RECORD_AUDIO"
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
       ]
     },
     "web": {
@@ -51,6 +52,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b15d3712-9cc5-441e-87ab-83f1f41856de"
+      }
+    },
+    "owner": "rudraksh14"
   }
 }
